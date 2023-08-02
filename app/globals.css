@@ -82,5 +82,5 @@ html,body, :root {
 }
 
 .hidden-medium{
-  @apply md:hidden
+  @apply  md:hidden
 }
