@@ -17,10 +17,11 @@ import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card,CardFooter} from "@/components/ui/card";
 import Image from "next/image";
-import Download from "lucide-react"
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const PhotoPage = () => {
   const router = useRouter();
+  const proModal = useProModal();
   const [photos, setPhotos] = useState<string[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -44,7 +45,10 @@ const PhotoPage = () => {
 
       setPhotos(urls);
     } catch (error: any) {
-        console.log(error)
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
+       
     } finally {
       router.refresh();
     }
