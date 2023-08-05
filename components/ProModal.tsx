@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import axios from "axios";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 
 
@@ -65,7 +66,7 @@ const ProModal = () => {
         window.location.href =  res.data.url
 
       }catch(e){
-        console.log(e, "STRIPE_CLIENT_ERROR")
+        toast.error("Something went wrong")
       } finally{setLoading(false)}
     }
   return (
@@ -75,7 +76,7 @@ const ProModal = () => {
           <DialogHeader>
             <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
               <div className="flex items-center gap-x-2 font-bold py-1">
-                Upgrage to Genius+
+                Upgrage to Genius
                 <Badge className="uppercase text-sm py-1" variant="premium">
                   Pro
                 </Badge>
@@ -102,6 +103,7 @@ const ProModal = () => {
           </DialogHeader>
           <DialogFooter>
             <Button
+            disabled={loading}
               onClick={onSubscribe}
               className="w-full"
               size="lg"
