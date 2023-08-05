@@ -15,6 +15,8 @@ import {
 import { Card } from "./ui/card";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
+import axios from "axios";
+import { useState } from "react";
 
 
 
@@ -54,6 +56,18 @@ const tools = [
 
 const ProModal = () => {
     const proModal = useProModal()
+    const [loading,setLoading] = useState(false)
+    const onSubscribe = async () => {
+      try {
+        setLoading(true)
+        const res = await axios.get("/api/stripe")
+
+        window.location.href =  res.data.url
+
+      }catch(e){
+        console.log(e, "STRIPE_CLIENT_ERROR")
+      } finally{setLoading(false)}
+    }
   return (
     <div>
       <Dialog open={proModal.isOpen} onOpenChange={proModal.onClose}>
@@ -74,14 +88,12 @@ const ProModal = () => {
                   className="p-3 border-black/5 flex items-center justify-between"
                 >
                   <div className="flex items-center gap-x-4">
-                    <div
-                      className={cn("p-2 w-fit rounded-md", tool.bgColor)}
-                    >
-                        <tool.icon className={cn("w-6 h-6", tool.color)}></tool.icon>
+                    <div className={cn("p-2 w-fit rounded-md", tool.bgColor)}>
+                      <tool.icon
+                        className={cn("w-6 h-6", tool.color)}
+                      ></tool.icon>
                     </div>
-                    <div className="font-semibold text-sm">
-                        {tool.label}
-                    </div>
+                    <div className="font-semibold text-sm">{tool.label}</div>
                   </div>
                   <Check className="text-primary w-5 h-5 "></Check>
                 </Card>
@@ -89,7 +101,14 @@ const ProModal = () => {
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-                <Button className="w-full" size="lg" variant="premuim">Upgrade <Zap className="w-4 h-4 fill-white ml-2"></Zap></Button>
+            <Button
+              onClick={onSubscribe}
+              className="w-full"
+              size="lg"
+              variant="premuim"
+            >
+              Upgrade <Zap className="w-4 h-4 fill-white ml-2"></Zap>
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

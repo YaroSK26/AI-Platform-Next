@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { Configuration, OpenAIApi } from "openai";
 
 import { increaseApiLimit, CheckApiLimit } from "@/lib/api-limit";
+import { CheckSubscription } from "@/lib/subscription";
 
 
 const configuration = new Configuration({
@@ -40,10 +41,11 @@ export async function POST(req: Request) {
     }
 
     const freeTrial = await CheckApiLimit();
+     const isPro = await CheckSubscription();
 
-    if (!freeTrial) {
-      return new NextResponse("Free trial has expired", { status: 403 });
-    }
+     if (!freeTrial && !isPro) {
+       return new NextResponse("Free trial has expired", { status: 403 });
+     }
 
     const response = await openai.createImage({
       prompt,
@@ -51,7 +53,9 @@ export async function POST(req: Request) {
       size: resolution,
     });
 
-    await increaseApiLimit();
+    if (!isPro) {
+      await increaseApiLimit();
+    }
 
     return NextResponse.json(response.data.data);
   } catch (error) {
