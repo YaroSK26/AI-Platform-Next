@@ -55,7 +55,9 @@ const CodePage = () => {
       if (error?.response?.status === 403) {
         proModal.onOpen();
       }else{
-          toast.error("Something went wrong")
+          toast.error(
+            "Unfortunately, some modules take too long to generate, and due to vercel's API limit, it is not possible to provide an answer."
+          );
         }
        
     } finally {
@@ -77,6 +79,7 @@ const CodePage = () => {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
+           
               className="
                 rounded-lg 
                 border 
@@ -137,19 +140,22 @@ const CodePage = () => {
                 )}
               >
                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-               
-               <ReactMarkdown components={{
-                pre: ({node,...props}) => (
-                  <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
-                    <pre {...props}/>
-                  </div>
-                ), 
-                code: ({node,...props}) => (
-                  <code className="bg-black/10 rounded-lg p-1" {...props}/>
-                )
-               }}
-                className="text-sm overflow-hidden leading-7"
-               >{message.content || ""}</ReactMarkdown>
+
+                <ReactMarkdown
+                  components={{
+                    pre: ({ node, ...props }) => (
+                      <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
+                        <pre {...props} />
+                      </div>
+                    ),
+                    code: ({ node, ...props }) => (
+                      <code className="bg-black/10 rounded-lg p-1" {...props} />
+                    ),
+                  }}
+                  className="text-sm overflow-hidden leading-7"
+                >
+                  {message.content || ""}
+                </ReactMarkdown>
               </div>
             ))}
           </div>
