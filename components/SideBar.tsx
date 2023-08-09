@@ -77,10 +77,10 @@ const SideBar = ({
       <div className="px-3 oy-2 flex-1 ">
         <Link href="/dashboard" className="flex items-center pl-3 mb-14 ">
           <div className="relative w-8 h-8 mr-4 ">
-            <Image fill sizes="lg" alt="Logo " src="/logo.png"></Image>
+            <Image fill sizes="lg" alt="Logo " src="/logo.jpg"></Image>
           </div>
           <h1 className={cn("text-2xl font-bold", montserrat.className)}>
-            Genius
+            Maestro
           </h1>
         </Link>
         <div className="space-y-1">
@@ -88,8 +88,12 @@ const SideBar = ({
             <Link
               href={route.href}
               key={route.href}
-              className={cn ("tex-sm group flex p-3 w-full justify-start font-medium transition  cursor-pointer hover:text-white  hover:bg-white/10 rounded-lg",
-               pathname ===  route.href ? "text-white bg-white/10" : "text-zinc-400")}
+              className={cn(
+                "tex-sm group flex p-3 w-full justify-start font-medium transition  cursor-pointer hover:text-white  hover:bg-white/10 rounded-lg",
+                pathname === route.href
+                  ? "text-white bg-white/10"
+                  : "text-zinc-400"
+              )}
             >
               <div className="flex items-center flex-1">
                 <route.icon className={cn("h-5 w-5 mr-3", route.color)} />
@@ -99,7 +103,7 @@ const SideBar = ({
           ))}
         </div>
       </div>
-      <FreeCounter isPro={isPro} apiLimitCount={apiLimitCount}/>
+      <FreeCounter isPro={isPro} apiLimitCount={apiLimitCount} />
     </div>
   );
 };
